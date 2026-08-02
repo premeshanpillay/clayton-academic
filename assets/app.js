@@ -52,14 +52,6 @@
     return byGrade[subjectId] || [];
   }
 
-  function countForGrade(grade) {
-    var total = 0;
-    for (var i = 0; i < SUBJECTS.length; i++) {
-      total += resourcesFor(grade, SUBJECTS[i].id).length;
-    }
-    return total;
-  }
-
   /* Pluralise without the awkward "1 resources". */
   function plural(n, word) {
     return n + " " + word + (n === 1 ? "" : "s");
@@ -125,12 +117,10 @@
     setTitle("Notes");
 
     var cards = GRADES.map(function (grade) {
-      var n = countForGrade(grade);
       return (
         '<a class="card card--grade" href="/notes?grade=' + grade + '">' +
           '<span class="card__label">Grade</span>' +
           '<h2 class="card__title">' + grade + "</h2>" +
-          '<span class="card__meta">' + plural(n, "resource") + "</span>" +
         "</a>"
       );
     }).join("");

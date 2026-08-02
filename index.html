@@ -65,18 +65,10 @@
 /* Build the home page lists from the same data file as the Notes section,
    so adding a subject in data.js updates every page at once. */
 (function () {
-  function count(grade) {
-    var total = 0, byGrade = NOTES[grade] || {};
-    SUBJECTS.forEach(function (s) { total += (byGrade[s.id] || []).length; });
-    return total;
-  }
-
   document.getElementById("grades").innerHTML = GRADES.map(function (g) {
-    var n = count(g);
     return '<a class="card card--grade" href="/notes?grade=' + g + '">' +
              '<span class="card__label">Grade</span>' +
              '<h3 class="card__title">' + g + '</h3>' +
-             '<span class="card__meta">' + n + ' resource' + (n === 1 ? '' : 's') + '</span>' +
            '</a>';
   }).join("");
 
