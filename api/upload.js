@@ -78,10 +78,13 @@ function safeName(raw) {
   return (stem || "file") + "." + ext;
 }
 
-export default async function handler(request) {
-  if (request.method !== "POST") return fail("Method not allowed.", 405);
-
-  var url = new URL(request.url);
+/* Named method export, so Vercel hands us a web-standard Request. A bare
+   `export default function handler(...)` gets the legacy Node (req, res)
+   pair instead, where request.url is only a path and URL parsing throws. */
+export async function POST(request) {
+  /* The base is a fallback: with a web Request the url is already absolute,
+     and this keeps parsing from ever throwing if it is not. */
+  var url = new URL(request.url, "http://localhost");
   var grade = url.searchParams.get("grade");
   var subject = url.searchParams.get("subject");
   var filename = safeName(url.searchParams.get("filename"));

@@ -15,16 +15,21 @@ const SUBJECTS = [
   "history", "drama", "art", "french", "zulu",
 ];
 
-export default async function handler(request) {
-  var url = new URL(request.url);
-  var grade = url.searchParams.get("grade");
-  var subject = url.searchParams.get("subject");
-
-  if (GRADES.indexOf(grade) === -1 || SUBJECTS.indexOf(subject) === -1) {
-    return Response.json({ error: "Unknown grade or subject." }, { status: 400 });
-  }
-
+/* Named method export, so Vercel hands us a web-standard Request. A bare
+   `export default function handler(...)` gets the legacy Node (req, res)
+   pair instead, where request.url is only a path and URL parsing throws. */
+export async function GET(request) {
   try {
+    /* The base is a fallback: with a web Request the url is already
+       absolute, and this keeps parsing from ever throwing if it is not. */
+    var url = new URL(request.url, "http://localhost");
+    var grade = url.searchParams.get("grade");
+    var subject = url.searchParams.get("subject");
+
+    if (GRADES.indexOf(grade) === -1 || SUBJECTS.indexOf(subject) === -1) {
+      return Response.json({ error: "Unknown grade or subject." }, { status: 400 });
+    }
+
     var result = await list({
       prefix: "notes/" + grade + "/" + subject + "/",
       limit: 1000,
