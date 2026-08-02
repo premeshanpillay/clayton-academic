@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clayton House — Academic Resources</title>
+<meta name="description" content="Notes, summaries and past papers for Clayton House, organised by grade and subject.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="/">Clayton</a>
+    <nav class="nav__links" aria-label="Main">
+      <a class="nav__link" href="/" aria-current="page">Home</a>
+      <a class="nav__link" href="/notes">Notes</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero wrap">
+    <h1 class="hero__title reveal">Clayton House.<br>Everything you need to study.</h1>
+    <p class="hero__sub reveal">Notes, summaries and past papers. Sorted by grade, then by subject.</p>
+    <div class="hero__actions reveal">
+      <a class="btn btn--primary" href="/notes">Browse notes</a>
+      <a class="btn btn--secondary" href="#subjects">See subjects</a>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap">
+      <div class="head head--center">
+        <h2 class="head__title">Start with your grade.</h2>
+      </div>
+      <div class="grid grid--grades" id="grades"></div>
+    </div>
+  </section>
+
+  <section class="section" id="subjects">
+    <div class="wrap">
+      <div class="head head--center">
+        <h2 class="head__title">Thirteen subjects.</h2>
+        <p class="head__sub">Every subject is covered for every grade, from Grade 8 through matric.</p>
+      </div>
+      <div class="grid grid--subjects" id="subject-list"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <span>Clayton House — Academic Resources</span>
+    <span>Made for the house, by the house.</span>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script>
+/* Build the home page lists from the same data file as the Notes section,
+   so adding a subject in data.js updates every page at once. */
+(function () {
+  function count(grade) {
+    var total = 0, byGrade = NOTES[grade] || {};
+    SUBJECTS.forEach(function (s) { total += (byGrade[s.id] || []).length; });
+    return total;
+  }
+
+  document.getElementById("grades").innerHTML = GRADES.map(function (g) {
+    var n = count(g);
+    return '<a class="card card--grade" href="/notes?grade=' + g + '">' +
+             '<span class="card__label">Grade</span>' +
+             '<h3 class="card__title">' + g + '</h3>' +
+             '<span class="card__meta">' + n + ' resource' + (n === 1 ? '' : 's') + '</span>' +
+           '</a>';
+  }).join("");
+
+  document.getElementById("subject-list").innerHTML = SUBJECTS.map(function (s) {
+    return '<a class="card" href="/notes">' +
+             '<h3 class="card__title" style="font-size:20px">' + s.name + '</h3>' +
+             '<span class="card__meta">Grades 8–12</span>' +
+           '</a>';
+  }).join("");
+})();
+</script>
+
+</body>
+</html>
