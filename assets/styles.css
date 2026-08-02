@@ -516,6 +516,78 @@ button {
   line-height: 1;
 }
 
+/* ------------------------------------------------------------- Upload -- */
+
+.upload {
+  margin-top: 34px;
+}
+
+.upload__inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 24px 26px;
+  background: var(--bg-alt);
+  border-radius: var(--radius-lg);
+}
+
+.upload__text {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.upload__title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.upload__hint {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* The real input is hidden; the label is the button. */
+.upload .btn.is-busy {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.upload__status {
+  margin: 12px 2px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  min-height: 18px;
+}
+
+.upload__status.is-error {
+  color: #d70015;
+}
+
+@media (prefers-color-scheme: dark) {
+  .upload__status.is-error {
+    color: #ff6961;
+  }
+}
+
+.upload__note {
+  margin: 0;
+  padding: 20px 26px;
+  font-size: 13px;
+  color: var(--text-muted);
+  background: var(--bg-alt);
+  border-radius: var(--radius-lg);
+}
+
+/* Keyboard focus has to show on the label, since the input itself is hidden. */
+.upload input:focus-visible + .btn {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 /* -------------------------------------------------------------- Empty -- */
 
 .empty {

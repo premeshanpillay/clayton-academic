@@ -1,0 +1,13 @@
+{
+  "name": "clayton-academic",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Academic resources for Clayton House",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.0.0"
+  }
+}

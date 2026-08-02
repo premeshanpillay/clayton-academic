@@ -10,9 +10,14 @@ notes.html          Notes section (grade -> subject -> resources)
 assets/styles.css   All styling
 assets/data.js      <- THE ONLY FILE YOU EDIT TO ADD NOTES
 assets/app.js       Renders the notes views
-files/              Put your PDFs here
+api/upload.js       Receives visitor uploads
+api/files.js        Lists uploaded files
+files/              Put your own PDFs here
 vercel.json         Clean URLs
 ```
+
+Each subject page shows two lists merged together: the resources you curate in
+`assets/data.js`, and anything visitors have uploaded.
 
 ---
 
@@ -58,13 +63,62 @@ clean URLs like `/notes`, which need a server to resolve.
 
 ---
 
+## Uploads
+
+Any visitor to the site can upload a document straight onto a subject page. There is
+no login and no approval step — an uploaded file is public immediately.
+
+### Turning it on
+
+Uploads need somewhere to store files. After the site is deployed:
+
+1. Open your project on Vercel
+2. **Storage** in the sidebar → **Create Database** → **Blob**
+3. Set access to **Public**, name it anything, and create it
+4. Make sure the store is connected to this project
+
+That is the whole setup. Vercel adds the `BLOB_READ_WRITE_TOKEN` environment
+variable automatically — you never copy or paste it yourself.
+
+Until you do this, the site still works perfectly; the subject pages just say
+"Uploading is available on the published site" instead of showing the upload button.
+
+### What is allowed
+
+| | |
+|---|---|
+| Max size | 4 MB per file |
+| Allowed | PDF, Word, PowerPoint, Excel, plain text, and images |
+| Blocked | `.html`, `.svg`, `.js`, archives, and everything else |
+
+The 4 MB cap is Vercel's request body limit (4.5 MB), not an arbitrary choice.
+
+`.html`, `.svg` and `.js` are blocked deliberately. Those file types can contain
+scripts, and because uploads are served from your own domain, allowing them would let
+anyone run code against people visiting your site. Do not add them to the allowlist in
+`api/upload.js`.
+
+### Things worth knowing
+
+Because there is no approval step, anything anyone uploads goes live under your
+domain immediately. If the site gets shared beyond your house, expect that to be
+tested eventually. Two things you can do if that happens:
+
+- Delete files from the Vercel dashboard: **Storage** → your store → **Browser**
+- Ask me to add an approval queue or a shared house password
+
+Vercel Blob has a free allowance and then charges for storage and bandwidth. Keep an
+eye on it if the site gets busy.
+
+---
+
 ## Deploying to Vercel
 
 ### The important detail
 
 In Vercel's project settings, **Framework Preset must be `Other`** and the
-Build Command must be **empty**. There is nothing to build. If Vercel tries to run a
-build, that is what fails.
+Build Command must be **empty**. Vercel installs the one dependency and picks up the
+`api/` functions on its own — there is no build to run.
 
 ### Option A — via GitHub (recommended, auto-deploys on every push)
 
