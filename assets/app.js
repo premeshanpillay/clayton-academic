@@ -52,11 +52,6 @@
     return byGrade[subjectId] || [];
   }
 
-  /* Pluralise without the awkward "1 resources". */
-  function plural(n, word) {
-    return n + " " + word + (n === 1 ? "" : "s");
-  }
-
   function isExternal(url) {
     return /^https?:\/\//i.test(url);
   }
@@ -143,11 +138,9 @@
     setTitle("Grade " + grade);
 
     var cards = SUBJECTS.map(function (subject) {
-      var n = resourcesFor(grade, subject.id).length;
       return (
-        '<a class="card" href="/notes?grade=' + grade + "&subject=" + esc(subject.id) + '">' +
+        '<a class="card card--subject" href="/notes?grade=' + grade + "&subject=" + esc(subject.id) + '">' +
           '<h2 class="card__title" style="font-size:20px">' + esc(subject.name) + "</h2>" +
-          '<span class="card__meta">' + (n ? plural(n, "resource") : "Nothing yet") + "</span>" +
         "</a>"
       );
     }).join("");
