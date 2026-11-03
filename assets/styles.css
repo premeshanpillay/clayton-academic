@@ -276,6 +276,42 @@ button {
   transform: translateX(20px);
 }
 
+/* Hero variant: larger, so it reads as a deliberate control rather than a
+   nav widget that wandered down the page. */
+.hero__theme {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.switch--hero {
+  width: 56px;
+  height: 32px;
+}
+
+.switch--hero .switch__icon {
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+}
+
+.switch--hero .switch__icon--sun {
+  left: 7px;
+}
+
+.switch--hero .switch__icon--moon {
+  right: 7px;
+}
+
+.switch--hero .switch__knob {
+  width: 26px;
+  height: 26px;
+}
+
+.switch--hero[aria-checked="true"] .switch__knob {
+  transform: translateX(24px);
+}
+
 /* --------------------------------------------------------------- Hero -- */
 
 .hero {

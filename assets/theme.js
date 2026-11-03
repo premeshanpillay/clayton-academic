@@ -15,8 +15,11 @@
 
   var KEY = "clayton-theme";
   var root = document.documentElement;
-  var button = document.querySelector(".switch");
-  if (!button) return;
+
+  /* Every .switch on the page is wired and kept in sync, so the control can
+     live in the nav on one page and in the hero on another. */
+  var buttons = document.querySelectorAll(".switch");
+  if (!buttons.length) return;
 
   var media = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -48,12 +51,15 @@
 
   function render() {
     var dark = isDark();
-    button.setAttribute("aria-checked", String(dark));
-    button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+    var label = dark ? "Switch to light mode" : "Switch to dark mode";
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].setAttribute("aria-checked", String(dark));
+      buttons[i].setAttribute("aria-label", label);
+    }
     paintChrome(dark);
   }
 
-  button.addEventListener("click", function () {
+  function toggle() {
     var next = isDark() ? "light" : "dark";
     root.setAttribute("data-theme", next);
     try {
@@ -62,7 +68,11 @@
       /* Storage unavailable: the choice still applies for this page view. */
     }
     render();
-  });
+  }
+
+  for (var b = 0; b < buttons.length; b++) {
+    buttons[b].addEventListener("click", toggle);
+  }
 
   /* If the visitor has made no choice, follow the OS when it changes. */
   var onSystemChange = function () {
